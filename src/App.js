@@ -1,14 +1,21 @@
-import { React, useState } from "react";
+import { React, useState, useEffect } from "react";
 import Axios from "axios";
 import "./App.css";
 import { FaSearch } from "react-icons/fa";
 import { FcSpeaker } from "react-icons/fc";
+import { MdDarkMode } from "react-icons/md";
 
 function App() {
   // Setting up the initial states using react hook 'useState'
 
   const [data, setData] = useState("");
   const [searchWord, setSearchWord] = useState("");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+
+  const handleToggleDarkMode = () => {
+    setIsDarkMode(prevMode => !prevMode);
+  };
 
   // Function to fetch information on button
   // click, and set the data accordingly
@@ -18,9 +25,14 @@ function App() {
         `https://api.dictionaryapi.dev/api/v2/entries/en_US/${searchWord}`
       ).then((response) => {
         setData(response.data[0]);
+        setShowAlert(false);
+      }).catch((error) => {
+        if (error.response && error.response.status === 404) {
+          setShowAlert(true);
+        }
       });
     } else {
-      alert("Mohon isi kata yang ingin dicari");
+      setShowAlert(true);
     }
   }
 
@@ -31,9 +43,26 @@ function App() {
     audio.play();
   }
 
+  // Function to handle key press
+  function handleKeyPress(event) {
+    if (event.key === "Enter") {
+      getMeaning();
+    }
+  }
+
+  useEffect(() => {
+    // Add event listener for key press
+    document.addEventListener("keypress", handleKeyPress);
+
+    // Clean up event listener on unmount
+    return () => {
+      document.removeEventListener("keypress", handleKeyPress);
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <h1>Web Kamus Sederhana</h1>
+    <div className={isDarkMode ? "App dark-mode" : "App"}>
+      <h1  onClick={() => {window.location.reload();}} >Web Kamus Bahasa Inggris</h1>
       <div className="searchBox">
         <input
           type="text"
@@ -42,6 +71,7 @@ function App() {
           onChange={(e) => {
             setSearchWord(e.target.value);
           }}
+          onKeyPress={handleKeyPress}
         />
         <button
           onClick={() => {
@@ -50,7 +80,14 @@ function App() {
         >
           <FaSearch size="20px" />
         </button>
+        <button
+          onClick={handleToggleDarkMode}
+          className="toggle-theme-btn"
+        >
+          {isDarkMode ? <MdDarkMode /> : <MdDarkMode />}
+        </button>
       </div>
+      {showAlert && <p style={{ color: "red" }}>Mohon isi kata yang ingin dicari</p>}
       {data && (
         <div className="showResults">
           <h2>
