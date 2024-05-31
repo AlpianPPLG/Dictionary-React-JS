@@ -34,11 +34,15 @@ h1 {
 h2 {
   font-size: 30px;
   text-decoration: underline;
-  padding-bottom: 20px;
+  padding-bottom: 30px;
 }
 
 @media (max-width: 767px) {
-  h4 {
+  .dark-mode h3 {
+    /* background-color: #121212; */
+    color: white;
+  }
+  h3 {
     font-size: 16px;
   }
 }
@@ -50,6 +54,7 @@ h2 {
   width: 100%;
   max-width: 700px;
   box-sizing: border-box;
+  margin: 0 auto;
 }
 
 @media (max-width: 767px) {
@@ -87,6 +92,8 @@ input:focus + .animate {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin: 0 auto;
+  max-width: 700px;
 }
 
 .searchBox > button:hover {
