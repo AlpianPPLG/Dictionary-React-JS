@@ -43,6 +43,11 @@ h2 {
   }
 }
 
+.dark-mode h4 {
+  background-color: #121212;
+  color: white;
+}
+
 .showResults {
   box-shadow: 0 0 5px 5px rgba(0,0,0,0.5), 0 0 5px 5px rgba(0,0,0,0.5) inset;
   border-radius: 10px;
