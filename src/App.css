@@ -37,9 +37,18 @@ h2 {
   padding-bottom: 20px;
 }
 
-@media (max-width: 767px) {
+
+@media (prefers-color-scheme: dark) {
+  .dark-mode h4 {
+    background-color: #121212;
+    color: #fff;
+  }
+}
+
+@media (max-width: 767px) and (prefers-color-scheme: dark) {
   h4 {
-    font-size: 16px;
+    background-color: #121212;
+    color: #fff;
   }
 }
 
