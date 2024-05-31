@@ -13,10 +13,7 @@
   transition: background-color 0.3s ease;
 }
 
-.dark-mode,
-h1,
-h2,
-h4 {
+.dark-mode {
   background-color: #121212;
   background-image: linear-gradient(315deg, #121212 0%, #1d1d1d 74%);
   color: #fff;
@@ -28,6 +25,9 @@ h1 {
   color: #000;
   padding: 1.5em;
   transition: color 0.3s ease;
+  text-overflow: clip;
+  display: -webkit-box;
+  overflow: hidden;
 }
 
 .dark-mode h1 {
@@ -47,21 +47,25 @@ h4 {
   text-transform: uppercase;
   margin-bottom: .5em;
   letter-spacing: .1em;
-  background-color: inherit;
 }
 
 .showResults {
   box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
   border-radius: 10px;
   padding: 20px;
-  background-color: var(--h1-background);
 }
 
-input {
-  width: 100%;
-  height: 38px;
-  font-size: 20px;
-  padding-left: 10px;
+input:focus + .animate {
+  animation: fadeInOut 1s ease-in-out;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .searchBox {
