@@ -13,7 +13,8 @@
   transition: background-color 0.3s ease;
 }
 
-.dark-mode {
+.dark-mode,
+h4 {
   background-color: #121212;
   background-image: linear-gradient(315deg, #121212 0%, #1d1d1d 74%);
   color: #fff;
@@ -37,9 +38,10 @@ h2 {
   padding-bottom: 20px;
 }
 
-.dark-mode h4,
-.dark-mode h4 * {
-  color: #fff;
+@media (max-width: 767px) {
+  h4 {
+    font-size: 16px;
+  }
 }
 
 .showResults {
