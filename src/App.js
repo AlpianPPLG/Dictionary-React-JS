@@ -7,7 +7,6 @@ import { MdDarkMode } from "react-icons/md";
 
 function App() {
   // Setting up the initial states using react hook 'useState'
-
   const [data, setData] = useState("");
   const [searchWord, setSearchWord] = useState("");
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -61,8 +60,8 @@ function App() {
   }, []);
 
   return (
-    <div className={isDarkMode ? "App dark-mode" : "App"}>
-      <h1  onClick={() => {window.location.reload();}} >Web Kamus Bahasa Inggris</h1>
+    <div className={isDarkMode ? "dark-mode" : ""}>
+      <h1 className={isDarkMode ? "dark-mode" : ""} onClick={() => {window.location.reload();}} >Web Kamus Bahasa Inggris</h1>
       <div className="searchBox">
         <input
           type="text"
@@ -87,7 +86,13 @@ function App() {
           {isDarkMode ? <MdDarkMode /> : <MdDarkMode />}
         </button>
       </div>
-      {showAlert && <p style={{ color: "red" }}>Mohon isi kata yang ingin dicari Atau Isi Dengan Benar</p>}
+      <div style={{marginTop: "25px", position: 'relative', maxWidth: '100%', width: '100%'}}>
+        {showAlert && (
+          <div style={{color: 'red', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+            <p style={{fontSize: 'calc(0.4vw + 10px)', textAlign: 'center', marginTop: '30px'}}>Mohon isi kata yang ingin dicari Atau Isi Dengan Benar</p>
+          </div>
+        )}
+      </div>
       {data && (
         <div className="showResults">
           <h2>
@@ -97,18 +102,18 @@ function App() {
                 playAudio();
               }}
             >
-              <FcSpeaker size="26px" />
+              <FcSpeaker size="22px" />
             </button>
           </h2>
-          <h4>Parts of speech:</h4>
+          <h3>Parts of speech:</h3>
 
           <p>{data.meanings[0].partOfSpeech}</p>
 
-          <h4>Definition:</h4>
+          <h3>Definition:</h3>
 
           <p>{data.meanings[0].definitions[0].definition}</p>
 
-          <h4>Example:</h4>
+          <h3>Example:</h3>
 
           <p>{data.meanings[0].definitions[0].example || "Tidak ada contoh"}</p>
         </div>
