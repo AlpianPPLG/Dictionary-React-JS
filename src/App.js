@@ -87,7 +87,7 @@ function App() {
           {isDarkMode ? <MdDarkMode /> : <MdDarkMode />}
         </button>
       </div>
-      {showAlert && <p style={{ color: "red" }}>Mohon isi kata yang ingin dicari</p>}
+      {showAlert && <p style={{ color: "red" }}>Mohon isi kata yang ingin dicari Atau Isi Dengan Benar</p>}
       {data && (
         <div className="showResults">
           <h2>
