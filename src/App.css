@@ -41,13 +41,8 @@ h2 {
   h4 {
     font-size: 16px;
     color: #1d1d1d;
-
+    background-color: #121212;
   }
-}
-
-.dark-mode h4 {
-  background-color: #121212;
-  color: white;
 }
 
 .showResults {
