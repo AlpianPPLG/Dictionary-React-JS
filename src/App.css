@@ -1,41 +1,34 @@
-:root {
-  --primary-color: #00b4d8;
-  --secondary-color: #4db33d;
-  --background-color: #f6f6f6;
-  --dark-background-color: #121212;
-  --text-color: #000;
-  --dark-text-color: #fff;
-}
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,200;0,400;0,600;0,800;1,300&display=swap");
 
-body {
-  margin: 0;
+.App {
   height: 100vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: var(--background-color);
-  background-image: linear-gradient(315deg, var(--background-color) 0%, var(--dark-background-color) 74%);
+  background-color: #f6f6f6;
+  background-image: linear-gradient(315deg, #f6f6f6 0%, #e9e9e9 74%);
   font-family: "Poppins", sans-serif;
   transition: background-color 0.3s ease;
 }
 
 .dark-mode {
-  background-color: var(--dark-background-color);
-  background-image: linear-gradient(315deg, var(--dark-background-color) 0%, #1d1d1d 74%);
-  color: var(--dark-text-color);
+  background-color: #121212;
+  background-image: linear-gradient(315deg, #121212 0%, #1d1d1d 74%);
+  color: #fff;
 }
 
 h1 {
   text-align: center;
   font-size: 3em;
-  color: var(--text-color);
+  color: #000;
   padding: 1.5em;
   transition: color 0.3s ease;
 }
 
 .dark-mode h1 {
-  color: var(--dark-text-color);
+  color: #fff;
 }
 
 h2 {
@@ -44,14 +37,37 @@ h2 {
   padding-bottom: 20px;
 }
 
-h4 {
-  color: var(--secondary-color);
+@media (max-width: 767px) {
+  h4 {
+    font-size: 16px;
+  }
 }
 
 .showResults {
-  box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
+  box-shadow: 0 0 5px 5px rgba(0,0,0,0.5), 0 0 5px 5px rgba(0,0,0,0.5) inset;
   border-radius: 10px;
   padding: 20px;
+  width: 100%;
+  max-width: 700px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 767px) {
+  .showResults {
+    box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
+  }
+}
+
+@media (min-width: 768px) {
+  .showResults {
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .showResults {
+    max-width: 700px;
+  }
 }
 
 input:focus + .animate {
@@ -74,14 +90,14 @@ input:focus + .animate {
 }
 
 .searchBox > button:hover {
-  background-color: var(--secondary-color);
+  background-color: #4db33d;
   color: white;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 .searchBox > input {
-  background-color: var(--background-color);
+  background-color: #f6f6f6;
   border: none;
   border-radius: 10px;
   padding: 15px;
@@ -90,11 +106,11 @@ input:focus + .animate {
 }
 
 .searchBox > button {
-  background-color: var(--primary-color);
+  background-color: #00b4d8;
   height: 45px;
   border: none;
   color: white;
-  box-shadow: 0px 3px 2px var(--primary-color);
+  box-shadow: 0px 3px 2px #00b4d8;
   cursor: pointer;
   padding: 0 15px;
   gap: 4px;
