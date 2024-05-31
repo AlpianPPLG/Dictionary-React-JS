@@ -14,9 +14,6 @@
 }
 
 .dark-mode,
-h2,
-h3,
-h4,
 p {
   background-color: #121212;
   background-image: linear-gradient(315deg, #121212 0%, #1d1d1d 74%);
