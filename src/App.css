@@ -13,12 +13,10 @@
   transition: background-color 0.3s ease;
 }
 
-.dark-mode,
-.light-mode,
-p {
-  background-color: #fff;
-  background-image: linear-gradient(315deg, #fff 0%, #e9e9e9 74%);
-  color: #000;
+.dark-mode {
+  background-color: #121212;
+  background-image: linear-gradient(315deg, #121212 0%, #1d1d1d 74%);
+  color: #fff;
 }
 
 h1 {
