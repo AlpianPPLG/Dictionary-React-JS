@@ -4,6 +4,7 @@ import "./App.css";
 import { FaSearch } from "react-icons/fa";
 import { FcSpeaker } from "react-icons/fc";
 import { MdDarkMode } from "react-icons/md";
+// import { MDBFooter } from "mdb-react-ui-kit";
 
 function App() {
   // Setting up the initial states using react hook 'useState'
@@ -12,8 +13,13 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
 
+  // Function to toggle dark mode
+  // Takes the previous state and negates it
+  // Updates the isDarkMode state
+  // Syntax: setState((prevState) => newState)
+  // In this case, newState is the negation of prevState
   const handleToggleDarkMode = () => {
-    setIsDarkMode(prevMode => !prevMode);
+    setIsDarkMode((prevMode) => !prevMode);
   };
 
   // Function to fetch information on button
@@ -22,14 +28,16 @@ function App() {
     if (searchWord.trim() !== "") {
       Axios.get(
         `https://api.dictionaryapi.dev/api/v2/entries/en_US/${searchWord}`
-      ).then((response) => {
-        setData(response.data[0]);
-        setShowAlert(false);
-      }).catch((error) => {
-        if (error.response && error.response.status === 404) {
-          setShowAlert(true);
-        }
-      });
+      )
+        .then((response) => {
+          setData(response.data[0]);
+          setShowAlert(false);
+        })
+        .catch((error) => {
+          if (error.response && error.response.status === 404) {
+            setShowAlert(true);
+          }
+        });
     } else {
       setShowAlert(true);
     }
@@ -61,7 +69,14 @@ function App() {
 
   return (
     <div className={isDarkMode ? "dark-mode" : ""}>
-      <h1 className={isDarkMode ? "dark-mode" : ""} onClick={() => {window.location.reload();}} >Web Kamus Bahasa Inggris</h1>
+      <h1
+        className={isDarkMode ? "dark-mode" : ""}
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        Web Kamus Bahasa Inggris
+      </h1>
       <div className="searchBox">
         <input
           type="text"
@@ -79,17 +94,37 @@ function App() {
         >
           <FaSearch size="20px" />
         </button>
-        <button
-          onClick={handleToggleDarkMode}
-          className="toggle-theme-btn"
-        >
+        <button onClick={handleToggleDarkMode} className="toggle-theme-btn">
           {isDarkMode ? <MdDarkMode /> : <MdDarkMode />}
         </button>
       </div>
-      <div style={{marginTop: "25px", position: 'relative', maxWidth: '100%', width: '100%'}}>
+      <div
+        style={{
+          marginTop: "25px",
+          position: "relative",
+          maxWidth: "100%",
+          width: "100%",
+        }}
+      >
         {showAlert && (
-          <div style={{color: 'red', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
-            <p style={{fontSize: 'calc(0.4vw + 10px)', textAlign: 'center', marginTop: '30px'}}>Mohon isi kata yang ingin dicari Atau Isi Dengan Benar</p>
+          <div
+            style={{
+              color: "red",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "calc(0.4vw + 10px)",
+                textAlign: "center",
+                marginTop: "30px",
+              }}
+            >
+              Mohon isi kata yang ingin dicari Atau Isi Dengan Benar
+            </p>
           </div>
         )}
       </div>
@@ -118,6 +153,11 @@ function App() {
           <p>{data.meanings[0].definitions[0].example || "Tidak ada contoh"}</p>
         </div>
       )}
+      <div className="footer" >
+        © 2024 Copyright:
+        <a style={{ color: isDarkMode ? 'white' : 'black', fontSize:'17px', textDecoration:'none' }} href="https://github.com/AlpianPPLG"> Alpian</a>
+      </div>
+
     </div>
   );
 }
