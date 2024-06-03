@@ -48,7 +48,8 @@ h2 {
 }
 
 .showResults {
-  box-shadow: 0 0 5px 5px rgba(0,0,0,0.5), 0 0 5px 5px rgba(0,0,0,0.5) inset;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.5),
+    0 0 5px 5px rgba(0, 0, 0, 0.5) inset;
   border-radius: 10px;
   padding: 20px;
   width: 100%;
@@ -59,7 +60,7 @@ h2 {
 
 @media (max-width: 767px) {
   .showResults {
-    box-shadow: 0 0 5px 5px rgba(0,0,0,0.5);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.5);
   }
 }
 
@@ -80,7 +81,8 @@ input:focus + .animate {
 }
 
 @keyframes fadeInOut {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0;
   }
   50% {
@@ -150,4 +152,15 @@ input:focus + .animate {
     width: 100%;
     max-width: 700px;
   }
+}
+
+.footer {
+  text-align: center;
+  padding: 5px;
+  padding: 1.9em;
+  bottom: 0;
+}
+
+.dark-mode .footer {
+  color: #fff;
 }
