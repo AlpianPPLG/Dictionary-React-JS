@@ -1,9 +1,11 @@
-import { React, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Axios from "axios";
 import "./App.css";
 import { FaSearch } from "react-icons/fa";
 import { FcSpeaker } from "react-icons/fc";
 import { MdDarkMode } from "react-icons/md";
+import { BiCopy } from "react-icons/bi"; // Ikon untuk salin
+import { RiRefreshLine } from "react-icons/ri"; // Ikon untuk reset
 
 function App() {
   const [data, setData] = useState("");
@@ -12,7 +14,9 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [searchHistory, setSearchHistory] = useState([]);
-  const [showHistoryModal, setShowHistoryModal] = useState(false); // New state for modal
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
+  const [error, setError] = useState("");
+  const [showInstructions, setShowInstructions] = useState(false); // State untuk petunjuk penggunaan
 
   // Toggle dark mode with transition effect
   const handleToggleDarkMode = () => {
@@ -35,7 +39,7 @@ function App() {
     }
   }, [searchWord]);
 
-  // Fetch meaning of the word
+  // Fetch meaning, synonyms, and antonyms of the word
   function getMeaning(word) {
     const searchQuery = word || searchWord;
     if (searchQuery.trim() !== "") {
@@ -46,31 +50,81 @@ function App() {
           setData(response.data[0]);
           setShowAlert(false);
           setSuggestions([]);
+          setError("");
 
           // Add search query to history if not already in it
           if (!searchHistory.includes(searchQuery)) {
             setSearchHistory((prevHistory) => [...prevHistory, searchQuery]);
           }
+
+          // Fetch synonyms and antonyms
+          fetchSynonymsAndAntonyms(searchQuery);
         })
         .catch((error) => {
           if (error.response && error.response.status === 404) {
             setShowAlert(true);
+            setError("Kata tidak ditemukan, coba lagi.");
           }
         });
     } else {
       setShowAlert(true);
+      setError("Mohon isi kata yang ingin dicari atau isi dengan benar");
     }
   }
 
-  function playAudio() {
-    let audio = new Audio(data.phonetics[0].audio);
-    audio.play();
+  // Fetch synonyms and antonyms
+  function fetchSynonymsAndAntonyms(word) {
+    Axios.get(`https://api.datamuse.com/synonyms?rel_syn=${word}`)
+      .then((response) => {
+        setData((prevData) => ({
+          ...prevData,
+          synonyms: response.data.map((syn) => syn.word),
+        }));
+      })
+      .catch((error) => {
+        console.error("Error fetching synonyms:", error);
+      });
+
+    Axios.get(`https://api.datamuse.com/words?rel_ant=${word}`)
+      .then((response) => {
+        setData((prevData) => ({
+          ...prevData,
+          antonyms: response.data.map((ant) => ant.word),
+        }));
+      })
+      .catch((error) => {
+        console.error("Error fetching antonyms:", error);
+      });
   }
 
+  // Play audio pronunciation
+  function playAudio() {
+    if (data && data.phonetics[0]) {
+      let audio = new Audio(data.phonetics[0].audio);
+      audio.play();
+    }
+  }
+
+  // Handle Enter key press
   function handleKeyPress(event) {
     if (event.key === "Enter") {
       getMeaning();
     }
+  }
+
+  // Copy definition to clipboard
+  function copyDefinition() {
+    if (data && data.meanings[0].definitions[0].definition) {
+      navigator.clipboard.writeText(data.meanings[0].definitions[0].definition);
+      alert("Definisi disalin ke clipboard!");
+    }
+  }
+
+  // Reset search
+  function resetSearch() {
+    setSearchWord("");
+    setData("");
+    setSuggestions([]);
   }
 
   useEffect(() => {
@@ -96,16 +150,37 @@ function App() {
           placeholder="Cari Disini"
           style={{ marginTop: "10px" }}
           onChange={(e) => setSearchWord(e.target.value)}
-          onKeyPress={handleKeyPress}
           value={searchWord}
         />
         <button onClick={() => getMeaning()}>
           <FaSearch size="20px" />
         </button>
+        <button onClick={resetSearch} className="reset-btn">
+          <RiRefreshLine size="20px" />
+        </button>
         <button onClick={handleToggleDarkMode} className="toggle-theme-btn">
           <MdDarkMode />
         </button>
+        <button
+          onClick={() => setShowInstructions(!showInstructions)}
+          className="instructions-btn"
+        >
+          ?
+        </button>
       </div>
+
+      {/* Petunjuk Penggunaan */}
+      {showInstructions && (
+        <div className="instructions-box">
+          <h3>Petunjuk Penggunaan:</h3>
+          <p>1. Ketikkan kata yang ingin dicari di kolom pencarian.</p>
+          <p>2. Klik tombol pencarian atau tekan Enter.</p>
+          <p>3. Klik pada kata di riwayat pencarian untuk melihat definisi.</p>
+          <p>4. Klik ikon speaker untuk mendengarkan pengucapan.</p>
+          <p>5. Klik ikon salin untuk menyalin definisi ke clipboard.</p>
+          <button onClick={() => setShowInstructions(false)}>Tutup</button>
+        </div>
+      )}
 
       {/* Autocomplete Suggestions */}
       {suggestions.length > 0 && (
@@ -181,7 +256,7 @@ function App() {
                 marginTop: "30px",
               }}
             >
-              Mohon isi kata yang ingin dicari atau isi dengan benar
+              {error}
             </p>
           </div>
         )}
@@ -193,19 +268,33 @@ function App() {
             {data.word}{" "}
             <button onClick={playAudio}>
               <FcSpeaker size="22px" />
+            </button>{" "}
+            <button onClick={copyDefinition}>
+              <BiCopy size="22px" />
             </button>
           </h2>
-          <h3>Parts of speech:</h3>
-          <p>{data.meanings[0].partOfSpeech}</p>
-          <h3>Definition:</h3>
+          <h3>Definisi:</h3>
           <p>{data.meanings[0].definitions[0].definition}</p>
-          <h3>Example:</h3>
+          <h3>Contoh:</h3>
           <p>{data.meanings[0].definitions[0].example || "Tidak ada contoh"}</p>
+          <h3>Sinonim:</h3>
+          <p>
+            {data.synonyms ? data.synonyms.join(", ") : "Tidak ada sinonim"}
+          </p>
+          <h3>Antonim:</h3>
+          <p>
+            {data.antonyms ? data.antonyms.join(", ") : "Tidak ada antonim"}
+          </p>
+          <h3>Penjelasan Singkat:</h3>
+          <p>
+            {data.meanings[0].definitions[0].definition ||
+              "Tidak ada penjelasan"}
+          </p>
         </div>
       )}
 
       <div className="footer">
-        © 2024 Copyright:
+        &copy; 2024 Copyright:
         <a
           style={{
             color: isDarkMode ? "white" : "black",
